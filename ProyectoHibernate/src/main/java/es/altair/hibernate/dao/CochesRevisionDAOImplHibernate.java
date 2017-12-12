@@ -124,4 +124,23 @@ public class CochesRevisionDAOImplHibernate implements CochesRevisionDAO {
 			System.out.println("\t\t\t\t---------------------------------------------");
 		}
 	}
+	public List<CochesRevisiones> listaPorMatricula(int num) {
+		List<CochesRevisiones> lista = new ArrayList<CochesRevisiones>();
+		
+		SessionFactory sf = new Configuration().configure().buildSessionFactory();
+		Session sesion = sf.openSession();
+		
+		try {
+			sesion.beginTransaction();
+			lista = sesion.createQuery("FROM CochesRevisiones WHERE idCoches=:id")
+					.setParameter("id", num).list();
+			sesion.getTransaction().commit();
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			sesion.close();
+			sf.close();
+		}
+		return lista;
+	}
 }

@@ -331,9 +331,11 @@ public class App
 	        	        System.out.println("\t\t\t\t║                             ║");
 	        	        System.out.println("\t\t\t\t║    3.- Mostrar Paginacion   ║");
 	        	        System.out.println("\t\t\t\t║                             ║");
-	        	        System.out.println("\t\t\t\t║    4.- Actualizar           ║");
+	        	        System.out.println("\t\t\t\t║    4.- Mostrar por Coches   ║");
 	        	        System.out.println("\t\t\t\t║                             ║");
-	        	        System.out.println("\t\t\t\t║    5.- Eliminar             ║");
+	        	        System.out.println("\t\t\t\t║    5.- Actualizar           ║");
+	        	        System.out.println("\t\t\t\t║                             ║");
+	        	        System.out.println("\t\t\t\t║    6.- Eliminar             ║");
 	        	        System.out.println("\t\t\t\t║                             ║");
 	        	        System.out.println("\t\t\t\t╠═════════════════════════════╣");
 	        	        System.out.println("\t\t\t\t║                             ║");
@@ -384,7 +386,25 @@ public class App
         	            	
         	            	cochesRevisionDAO.mostrarCochesRevisionPaginacion(numPag);
         	            	break;	
-						case 4: // Actualizar CochesRevision
+						case 4: //Mostrar Por Coches
+							mostrarCoches();
+							System.out.print("\t\t Seleccione un coche (ID): ");
+							int cochesID = sc.nextInt(); 
+							
+							List<CochesRevisiones> lista2 = cochesRevisionDAO.listaPorMatricula(cochesID);
+							System.out.println("\t\t----------------------- MATRICULA: "+ cochesDAO.get(cochesID).getMatricula() +"-------------------------------");
+							
+							for (CochesRevisiones cochesRevisiones2 : lista2) {
+								System.out.println("\t\t"+ cochesRevisiones2.getKilometros() 
+								+"\t" + cochesRevisiones2.getFecha()
+								+"\t" + cochesRevisiones2.getRevision().getNombre() 
+								+", "+ cochesRevisiones2.getRevision().getTipo() );
+							}
+							
+							System.out.println("\t\t-------------------------------------------------------------------------");
+							
+							break;
+						case 5: // Actualizar CochesRevision
 							mostrarCochesRevisiones(); 
 							System.out.print("\t\t Seleccione una registro (ID): ");
         	        		int id = sc.nextInt();
@@ -420,7 +440,7 @@ public class App
         	                cochesRevisionDAO.update(cR);
         	                mostrarCochesRevisiones();
 							break;
-						case 5: // Eliminar CochesRevisiones
+						case 6: // Eliminar CochesRevisiones
 							mostrarCochesRevisiones();
 							System.out.print("\t\t Seleccione una registro (ID): ");
         	        		int idDelete = sc.nextInt();

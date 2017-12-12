@@ -2,6 +2,7 @@ package es.altair.hibernate.dao;
 
 import java.util.List;
 
+import es.altair.hibernate.bean.Coches;
 import es.altair.hibernate.bean.CochesRevisiones;
 
 public interface CochesRevisionDAO {
@@ -11,4 +12,5 @@ public interface CochesRevisionDAO {
 	public void delete(CochesRevisiones cR);
 	public void update(CochesRevisiones cR);
 	public void mostrarCochesRevisionPaginacion(int tamayo);
+	public List<CochesRevisiones> listaPorMatricula(int num);
 }
