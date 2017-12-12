@@ -3,6 +3,7 @@ package es.altair.hibernate.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -109,4 +110,27 @@ public class ClienteDAOImplHibernate implements ClienteDAO {
 		}
 		
 	}
+	public void mostrarClientesPaginacion(int tamayo) {
+		SessionFactory sf = new Configuration().configure().buildSessionFactory();
+		Session sesion = sf.openSession();
+		
+		long numClientes = (Long)  sesion.createQuery("SELECT count(*) FROM Cliente").uniqueResult();
+		
+		int numPaginas = (int) Math.ceil(numClientes/tamayo); 
+		
+		Query query = (Query) sesion.createQuery("FROM Cliente").setMaxResults(tamayo);
+		
+		for (int i = 0; i < numPaginas; i++) {
+			System.out.println("\t\t\t\t------------------ Página " + (i+1) + "-----------------");
+			query.setFirstResult(i*tamayo);
+			List<Cliente> clientes = query.list(); 
+			for (Cliente cliente : clientes) {
+				System.out.println(cliente);
+			}
+			System.out.println("\t\t\t\t---------------------------------------------");
+
+		}
+		 
+	}
+	
 }

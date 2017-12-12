@@ -23,6 +23,7 @@ import es.altair.hibernate.dao.RevisionDAOImplHibernate;
 public class App 
 {
 	private static Scanner sc = new Scanner(System.in);
+	
 	public static ClienteDAO clienteDAO = new ClienteDAOImplHibernate(); 
 	public static CochesDAO cochesDAO = new CocheDAOImplHibernate(); 
 	public static RevisionDAO revisionDAO = new RevisionDAOImplHibernate();
@@ -33,7 +34,7 @@ public class App
 	public static List<Revision> revisiones = null;
 	public static List<CochesRevisiones> cochesRevisiones = null;
 	public static List<Object[]> cochesRevisionesPorCoches = new ArrayList<Object[]>() ;
-
+	public static List<Integer> listIdCliente = new ArrayList<Integer>();
 	
     public static void main( String[] args )
     {
@@ -76,9 +77,11 @@ public class App
 	        	        System.out.println("\t\t\t\t║                             ║");
 	        	        System.out.println("\t\t\t\t║    2.- Mostrar Clientes     ║");
 	        	        System.out.println("\t\t\t\t║                             ║");
-	        	        System.out.println("\t\t\t\t║    3.- Actualizar Cliente   ║");
+	        	        System.out.println("\t\t\t\t║    3.- Mostrar Paginacion   ║");
 	        	        System.out.println("\t\t\t\t║                             ║");
-	        	        System.out.println("\t\t\t\t║    4.- Eliminar             ║");
+	        	        System.out.println("\t\t\t\t║    4.- Actualizar Cliente   ║");
+	        	        System.out.println("\t\t\t\t║                             ║");
+	        	        System.out.println("\t\t\t\t║    5.- Eliminar             ║");
 	        	        System.out.println("\t\t\t\t║                             ║");
 	        	        System.out.println("\t\t\t\t╠═════════════════════════════╣");
 	        	        System.out.println("\t\t\t\t║                             ║");
@@ -112,11 +115,20 @@ public class App
 	        	        	case 2: // Mostrar Clientes
 	        	        		mostrarClientes();
 	        	        		break;
-	        	        	case 3: // Actualizar Cliente
+	        	        	case 3: // Mostrar Clientes Por Paginación
+	        	        		System.out.print("\t\tIndique el numero para paginación: ");
+	        	        		int numPag = sc.nextInt(); 
+	        	        		System.out.println("\t\t\t\t----------------- Mostrar Cliente ------------------");
+
+	        	        		clienteDAO.mostrarClientesPaginacion(numPag);
+	        	        		
+	        	        		break; 
+	        	        	case 4: // Actualizar Cliente
+	        	        		boolean error = true;
 	        	        		mostrarClientes();
 	        	        		System.out.print("\t\tElije un cliente a editar: (Solo ID)");
 	        	        		int idCliente = sc.nextInt();
-	        	        		
+	        	        			        	        		        	        		        	        		
 	        	        		System.out.print("\t\t Nombre: ");
 	        	        		nombreCliente = sc.next();
 	        	        		
@@ -133,7 +145,7 @@ public class App
 	        	        		
 	        	        		clienteDAO.update(clienteEditar);
 	        	        		break;
-	        	        	case 4: // Eliminar 
+	        	        	case 5: // Eliminar 
 	        	        		mostrarClientes();
 	        	        		System.out.print("\t\tElije un cliente a editar: (Solo ID)");
 	        	        		int idClienteDelete = sc.nextInt();
@@ -156,9 +168,11 @@ public class App
 	        	        System.out.println("\t\t\t\t║                             ║");
 	        	        System.out.println("\t\t\t\t║    2.- Mostrar Coche        ║");
 	        	        System.out.println("\t\t\t\t║                             ║");
-	        	        System.out.println("\t\t\t\t║    3.- Actualizar Coche     ║");
+	        	        System.out.println("\t\t\t\t║    3.- Mostrar Paginacion   ║");
 	        	        System.out.println("\t\t\t\t║                             ║");
-	        	        System.out.println("\t\t\t\t║    4.- Eliminar  Coche      ║");
+	        	        System.out.println("\t\t\t\t║    4.- Actualizar Coche     ║");
+	        	        System.out.println("\t\t\t\t║                             ║");
+	        	        System.out.println("\t\t\t\t║    5.- Eliminar  Coche      ║");
 	        	        System.out.println("\t\t\t\t║                             ║");
 	        	        System.out.println("\t\t\t\t╠═════════════════════════════╣");
 	        	        System.out.println("\t\t\t\t║                             ║");
@@ -187,7 +201,14 @@ public class App
 						case 2: // Mostrar Coche
 							mostrarCoches();
 							break; 
-						case 3: // Actualizar Coche
+						case 3: // Mostrar Clientes Por Paginación
+        	        		System.out.print("\t\tIndique el numero para paginación: ");
+        	        		int numPag = sc.nextInt(); 
+        	    			System.out.println("\t\t\t\t----------------- Mostrar Coches ------------------");
+
+	        	        	cochesDAO.mostrarCochesPaginacion(numPag);
+        	        		break; 
+						case 4: // Actualizar Coche
 							mostrarCoches();
 							
 							System.out.print("\t\t Seleccione un coche (ID): ");
@@ -200,7 +221,7 @@ public class App
         	        		cochesDAO.update(c);
         	        		mostrarCoches();
 							break;
-						case 4: // Eliminar  Coche
+						case 5: // Eliminar  Coche
 							mostrarCoches();
 							System.out.print("\t\t Seleccione un coche (ID): ");
         	        		int id3 = sc.nextInt();
@@ -224,9 +245,11 @@ public class App
 	        	        System.out.println("\t\t\t\t║                             ║");
 	        	        System.out.println("\t\t\t\t║    2.- Mostrar Revisión     ║");
 	        	        System.out.println("\t\t\t\t║                             ║");
-	        	        System.out.println("\t\t\t\t║    3.- Actualizar Revisión  ║");
+	        	        System.out.println("\t\t\t\t║    3.- Mostrar Paginacion   ║");
 	        	        System.out.println("\t\t\t\t║                             ║");
-	        	        System.out.println("\t\t\t\t║    4.- Eliminar  Revisión   ║");
+	        	        System.out.println("\t\t\t\t║    4.- Actualizar Revisión  ║");
+	        	        System.out.println("\t\t\t\t║                             ║");
+	        	        System.out.println("\t\t\t\t║    5.- Eliminar  Revisión   ║");
 	        	        System.out.println("\t\t\t\t║                             ║");
 	        	        System.out.println("\t\t\t\t╠═════════════════════════════╣");
 	        	        System.out.println("\t\t\t\t║                             ║");
@@ -255,7 +278,14 @@ public class App
 							mostrarRevisiones();
 							
 							break; 
-						case 3: // Actualizar Revisión
+						case 3: // Mostrar Revision Por Paginación
+        	        		System.out.print("\t\tIndique el numero para paginación: ");
+        	        		int numPag = sc.nextInt(); 
+        	            	System.out.println("\t\t\t\t----------------- Mostrar Revisiones ------------------");
+        	            	
+        	            	revisionDAO.mostrarRevisionPaginacion(numPag);
+        	        		break;
+						case 4: // Actualizar Revisión
 							mostrarRevisiones();
 							
 							System.out.print("\t\t Seleccione una revision (ID): ");
@@ -274,7 +304,7 @@ public class App
         	        		revisionDAO.update(r);
         	        		mostrarRevisiones();
 							break;
-						case 4: // Eliminar Revisión
+						case 5: // Eliminar Revisión
 							mostrarRevisiones();
 							
 							System.out.print("\t\t Seleccione una revision (ID): ");
@@ -299,9 +329,11 @@ public class App
 	        	        System.out.println("\t\t\t\t║                             ║");
 	        	        System.out.println("\t\t\t\t║    2.- Mostrar              ║");
 	        	        System.out.println("\t\t\t\t║                             ║");
-	        	        System.out.println("\t\t\t\t║    3.- Actualizar           ║");
+	        	        System.out.println("\t\t\t\t║    3.- Mostrar Paginacion   ║");
 	        	        System.out.println("\t\t\t\t║                             ║");
-	        	        System.out.println("\t\t\t\t║    4.- Eliminar             ║");
+	        	        System.out.println("\t\t\t\t║    4.- Actualizar           ║");
+	        	        System.out.println("\t\t\t\t║                             ║");
+	        	        System.out.println("\t\t\t\t║    5.- Eliminar             ║");
 	        	        System.out.println("\t\t\t\t║                             ║");
 	        	        System.out.println("\t\t\t\t╠═════════════════════════════╣");
 	        	        System.out.println("\t\t\t\t║                             ║");
@@ -324,7 +356,7 @@ public class App
 	        	        		int idRevision = sc.nextInt();
 	        	        		Revision r = revisionDAO.get(idRevision);
 	        	        		
-	        	        		System.out.print("\t\t Fecha (AA/MM/DD): ");
+	        	        		System.out.print("\t\t Fecha (AAAA/MM/DD): ");
 	        	        		String fechaS = sc.next(); 
 	        	        		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	        	                Date fecha = null;
@@ -345,11 +377,17 @@ public class App
 						case 2: // Mostrar CochesRevision
 							mostrarCochesRevisiones();
 							break; 
-						case 3: // Actualizar CochesRevision
+						case 3: // Mostrar Revision Por Paginación
+        	        		System.out.print("\t\tIndique el numero para paginación: ");
+        	        		int numPag = sc.nextInt(); 
+        	            	System.out.println("\t\t\t\t----------------- Mostrar Coches Revisiones ------------------");
+        	            	
+        	            	cochesRevisionDAO.mostrarCochesRevisionPaginacion(numPag);
+        	            	break;	
+						case 4: // Actualizar CochesRevision
 							mostrarCochesRevisiones(); 
 							System.out.print("\t\t Seleccione una registro (ID): ");
         	        		int id = sc.nextInt();
-        	        		
         	        		CochesRevisiones cR = cochesRevisionDAO.get(id);
         	        		
         	        		mostrarCoches();
@@ -364,7 +402,7 @@ public class App
 				        	Revision r2 = revisionDAO.get(idRevision2);
 				        	cR.setRevision(r2);
 				        	
-				        	System.out.print("\t\t Fecha (AA/MM/DD): ");
+				        	System.out.print("\t\t Fecha (AAAA/MM/DD): ");
         	        		String fechaSdos = sc.next(); 
         	        		SimpleDateFormat df2 = new SimpleDateFormat("yyyy/MM/dd");
         	                Date fecha2 = null;
@@ -382,7 +420,7 @@ public class App
         	                cochesRevisionDAO.update(cR);
         	                mostrarCochesRevisiones();
 							break;
-						case 4: // Eliminar CochesRevisiones
+						case 5: // Eliminar CochesRevisiones
 							mostrarCochesRevisiones();
 							System.out.print("\t\t Seleccione una registro (ID): ");
         	        		int idDelete = sc.nextInt();
@@ -443,4 +481,5 @@ public class App
     	System.out.println("\t\t\t\t-------------------------------------------------------");
 
     }
+    
 }

@@ -10,4 +10,5 @@ public interface RevisionDAO {
 	public Revision get(int id); 
 	public void update(Revision r);
 	public void delete(Revision r);
+	public void mostrarRevisionPaginacion(int tamayo);
 }

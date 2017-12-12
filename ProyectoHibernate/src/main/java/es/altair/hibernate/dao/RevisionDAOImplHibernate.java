@@ -3,6 +3,7 @@ package es.altair.hibernate.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -103,6 +104,27 @@ public class RevisionDAOImplHibernate implements RevisionDAO {
 			sf.close();
 		}
 		
+		
+	}
+	public void mostrarRevisionPaginacion(int tamayo) {
+		SessionFactory sf = new Configuration().configure().buildSessionFactory();
+		Session sesion = sf.openSession();
+		
+		long numRevision = (Long)  sesion.createQuery("SELECT count(*) FROM Revision").uniqueResult();
+		
+		int numPaginas = (int) Math.ceil(numRevision/tamayo); 
+		
+		Query query = (Query) sesion.createQuery("FROM Revision").setMaxResults(tamayo);
+		
+		for (int i = 0; i < numPaginas; i++) {
+			System.out.println("\t\t\t\t------------------ Página " + (i+1) + "-----------------");
+			query.setFirstResult(i*tamayo);
+			List<Revision> revisiones = query.list(); 
+			for (Revision revision : revisiones) {
+				System.out.println("\t\t\t\t\t\t    " + revision.getIdRevisiones() + ")" + revision.getNombre() + "\t" + revision.getTipo());
+			}
+			System.out.println("\t\t\t\t---------------------------------------------");
+		}
 		
 	}
 	

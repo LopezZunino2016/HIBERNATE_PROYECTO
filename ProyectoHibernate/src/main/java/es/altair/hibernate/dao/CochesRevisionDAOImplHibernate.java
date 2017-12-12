@@ -3,6 +3,7 @@ package es.altair.hibernate.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -48,7 +49,6 @@ public class CochesRevisionDAOImplHibernate implements CochesRevisionDAO {
 		
 		return listaCochesRevision;
 	}
-
 	public CochesRevisiones get(int id) {
 		CochesRevisiones cR = null; 
 		
@@ -102,6 +102,26 @@ public class CochesRevisionDAOImplHibernate implements CochesRevisionDAO {
 		} finally {
 			sesion.close();
 			sf.close();
+		}
+	}
+	public void mostrarCochesRevisionPaginacion(int tamayo) {
+		SessionFactory sf = new Configuration().configure().buildSessionFactory();
+		Session sesion = sf.openSession();
+		
+		long numCoches = (Long)  sesion.createQuery("SELECT count(*) FROM CochesRevisiones").uniqueResult();
+		
+		int numPaginas = (int) Math.ceil(numCoches/tamayo); 
+		
+		Query query = (Query) sesion.createQuery("FROM CochesRevisiones").setMaxResults(tamayo);
+		
+		for (int i = 0; i < numPaginas; i++) {
+			System.out.println("\t\t\t\t------------------ Página " + (i+1) + "-----------------");
+			query.setFirstResult(i*tamayo);
+			List<CochesRevisiones> listcR = query.list(); 
+			for (CochesRevisiones cR : listcR) {
+				System.out.println("\t\t\t    " + cR.getIdCochesRevisiones() + ") " + cR.getCoche().getMatricula() + ", "+ cR.getFecha() + ", " + cR.getKilometros()+ ", "+ cR.getRevision().getNombre() + cR.getRevision().getTipo() );
+			}
+			System.out.println("\t\t\t\t---------------------------------------------");
 		}
 	}
 }

@@ -10,4 +10,5 @@ public interface ClienteDAO {
 	public Cliente get(int id); 
 	public void update(Cliente id);
 	public void delete(Cliente id);
+	public void mostrarClientesPaginacion(int tamayo);
 }

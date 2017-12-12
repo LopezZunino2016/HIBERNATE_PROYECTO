@@ -3,6 +3,7 @@ package es.altair.hibernate.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -104,6 +105,27 @@ public class CocheDAOImplHibernate implements CochesDAO {
 			sesion.close();
 			sf.close();
 		}
+	}
+	public void mostrarCochesPaginacion(int tamayo) {
+		SessionFactory sf = new Configuration().configure().buildSessionFactory();
+		Session sesion = sf.openSession();
+		
+		long numCoches = (Long)  sesion.createQuery("SELECT count(*) FROM Coches").uniqueResult();
+		
+		int numPaginas = (int) Math.ceil(numCoches/tamayo); 
+		
+		Query query = (Query) sesion.createQuery("FROM Coches").setMaxResults(tamayo);
+		
+		for (int i = 0; i < numPaginas; i++) {
+			System.out.println("\t\t\t\t------------------ Página " + (i+1) + "-----------------");
+			query.setFirstResult(i*tamayo);
+			List<Coches> coches = query.list(); 
+			for (Coches coche : coches) {
+				System.out.println("\t\t\t\t\t\t    " + coche.getIdCoches() + ")" + coche.getMatricula());
+			}
+			System.out.println("\t\t\t\t---------------------------------------------");
+		}
+		
 	}
 
 }

@@ -10,4 +10,5 @@ public interface CochesDAO {
 	public Coches get(int id);
 	public void delete(Coches c);
 	public void update(Coches c);
+	public void mostrarCochesPaginacion(int tamayo);
 }

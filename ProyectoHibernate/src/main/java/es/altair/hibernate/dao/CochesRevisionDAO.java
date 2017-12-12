@@ -10,5 +10,5 @@ public interface CochesRevisionDAO {
 	public CochesRevisiones get(int id);
 	public void delete(CochesRevisiones cR);
 	public void update(CochesRevisiones cR);
-	
+	public void mostrarCochesRevisionPaginacion(int tamayo);
 }
